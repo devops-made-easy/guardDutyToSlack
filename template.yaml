@@ -1,0 +1,45 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  guardDutyToSlack
+
+  Sample SAM Template for guardDutyToSlack
+
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: GuardDuty-Events-To-Slack
+    Description: post you guard duty events to slack
+    Author: devops-made-easy
+    SpdxLicenseId: Apache-2.0
+    LicenseUrl: LICENSE
+    ReadmeUrl: README.md
+    Labels: ['lambda', 'sam', 'devops-made-easy', 'guardduty'] 
+    HomePageUrl: https://github.com/devops-made-easy/guardDutyToSlack
+    SemanticVersion: 0.0.1
+    SourceCodeUrl: https://github.com/devops-made-easy/guardDutyToSlack
+    
+Resources:
+  GuardDutyToSlack:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: GuardDutyToSlack/
+      Handler: main.lambda_handler
+      Runtime: python3.6
+      Timeout: 30
+      Environment:
+        Variables:
+          SLACK_WEBHOOK_URL: SLACK_WEBHOOK_URL
+          SEVERITY_LEVEL: SEVERITY_LEVEL
+      Events:
+
+
+Outputs:
+  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
+  # Find out more about other implicit resources you can reference within SAM
+  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+  GuardDutyToSlackFunction:
+    Description: "GuardDutyToSlack Lambda Function ARN"
+    Value: !GetAtt GuardDutyToSlack.Arn
+  GuardDutyToSlackIamRole:
+    Description: "Implicit IAM Role created for GuardDutyToSlack function"
+    Value: !GetAtt GuardDutyToSlackRole.Arn
